@@ -17,15 +17,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Define breakpoints
-          const tabletBreakpoint = 768.0;
           const desktopBreakpoint = 1024.0;
-          
           if (constraints.maxWidth >= desktopBreakpoint) {
             return _buildDesktopLayout();
-          } else if (constraints.maxWidth >= tabletBreakpoint) {
-            return _buildTabletLayout();
-          } else {
+        }else {
             return _buildMobileLayout();
           }
         },
@@ -54,29 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(20),
             child: const MarketingContent(),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildTabletLayout() {
-    return Row(
-      children: [
-        Expanded(
-          flex: 3,
-          child: SingleChildScrollView(
-            child: Container(
-              color: Colors.white,
-              child: const LoginForm(
-                socialButtonsLayout: SocialButtonsLayout.grid,
-                padding: EdgeInsets.all(20),
-              ),
-            ),
-          ),
-        ),
-        const Expanded(
-          flex: 2,
-          child: MarketingContent(),
         ),
       ],
     );
