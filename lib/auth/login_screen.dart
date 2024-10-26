@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trai_ui/auth/auth_services.dart';
 import 'package:trai_ui/auth/widgets/login_form.dart';
 import 'package:trai_ui/auth/widgets/marketing_contents.dart';
 
@@ -10,6 +11,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  final AuthServices _authService = AuthServices();
+  final bool _isSigningIn = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

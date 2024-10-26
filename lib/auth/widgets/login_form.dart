@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:trai_ui/auth/auth_services.dart';
+import 'package:trai_ui/auth/phone_authentication.dart';
 import 'package:trai_ui/auth/widgets/branded_logo.dart';
 import 'package:trai_ui/auth/widgets/buttons.dart';
 import 'package:trai_ui/responsive/ts.dart';
@@ -7,7 +12,7 @@ import 'package:trai_ui/widget/textfield.dart';
 
 enum SocialButtonsLayout { grid, column }
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   final SocialButtonsLayout socialButtonsLayout;
   final EdgeInsets padding;
 
@@ -18,9 +23,16 @@ class LoginForm extends StatelessWidget {
   });
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+   final AuthServices _authService = AuthServices();
+  bool _isSigningIn = false;
+  @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: widget.padding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -71,14 +83,16 @@ class LoginForm extends StatelessWidget {
         const SizedBox(height: 8),
         PrimaryButton(
           text: 'Login',
-          onPressed: () {},
+          onPressed: () {
+            log("login success");
+          },
         ),
       ],
     );
   }
 
   Widget _buildSocialButtons() {
-    if (socialButtonsLayout == SocialButtonsLayout.grid) {
+    if (widget.socialButtonsLayout == SocialButtonsLayout.grid) {
       return _buildGridSocialButtons();
     } else {
       return _buildColumnSocialButtons();
@@ -97,7 +111,31 @@ class LoginForm extends StatelessWidget {
                   text: 'Log in with Google',
                   icon: FontAwesomeIcons.google,
                   color: Colors.red,
-                  onPressed: () {},
+                  onPressed: () async {
+                  setState(() {
+                    _isSigningIn = true;
+                  });
+                  try {
+                    final userCredential = 
+                        await _authService.signInWithGoogle();
+                    if (userCredential != null && mounted) {
+                      // Navigate to home screen
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error signing in: $e'),
+                      ),
+                    );
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isSigningIn = false;
+                      });
+                    }
+                  }
+                },
                 ),
               ),
               const SizedBox(width: 20),
@@ -105,7 +143,7 @@ class LoginForm extends StatelessWidget {
                 child: SocialButton(
                   text: 'Log in with Microsoft',
                   icon: FontAwesomeIcons.microsoft,
-                  onPressed: () {},
+                  onPressed: ()=>  _handleLogin(context, _authService.signInWithMicrosoft),
                 ),
               ),
             ],
@@ -118,7 +156,26 @@ class LoginForm extends StatelessWidget {
                   text: 'Log in with Facebook',
                   icon: Icons.facebook_outlined,
                   color: Colors.blue,
-                  onPressed: () {},
+                    onPressed: () async {
+                try {
+                  final userCredential = await _authService.signInWithFacebook();
+                  if (userCredential != null) {
+                    // Navigate to home screen on successful login
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const HomeScreen(),
+                    //   ),
+                    // );
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Login failed: ${e.toString()}'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
                 ),
               ),
               const SizedBox(width: 20),
@@ -136,6 +193,27 @@ class LoginForm extends StatelessWidget {
       ),
     );
   }
+ Future<void> _handleLogin(BuildContext context, Future<UserCredential?> Function() signInMethod) async {
+    try {
+      final userCredential = await signInMethod();
+      if (userCredential != null && context.mounted) {
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(
+        //     builder: (context) => const HomeScreen(),
+        //   ),
+        // );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login failed: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   Widget _buildColumnSocialButtons() {
     return Padding(
@@ -146,14 +224,38 @@ class LoginForm extends StatelessWidget {
             text: 'Log in with Google',
             icon: FontAwesomeIcons.google,
             color: Colors.red,
-            onPressed: () {},
+            onPressed: () async {
+                  setState(() {
+                    _isSigningIn = true;
+                  });
+                  try {
+                    final userCredential = 
+                        await _authService.signInWithGoogle();
+                    if (userCredential != null && mounted) {
+                      // Navigate to home screen
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error signing in: $e'),
+                      ),
+                    );
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isSigningIn = false;
+                      });
+                    }
+                  }
+                },
             width: double.infinity,
           ),
           const SizedBox(height: 10),
           SocialButton(
             text: 'Log in with Microsoft',
             icon: FontAwesomeIcons.microsoft,
-            onPressed: () {},
+            onPressed: ()=>  _handleLogin(context, _authService.signInWithMicrosoft),
             width: double.infinity,
           ),
           const SizedBox(height: 10),
@@ -161,7 +263,26 @@ class LoginForm extends StatelessWidget {
             text: 'Log in with Facebook',
             icon: Icons.facebook_outlined,
             color: Colors.blue,
-            onPressed: () {},
+             onPressed: () async {
+                try {
+                  final userCredential = await _authService.signInWithFacebook();
+                  if (userCredential != null) {
+                    // Navigate to home screen on successful login
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const HomeScreen(),
+                    //   ),
+                    // );
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Login failed: ${e.toString()}'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              },
             width: double.infinity,
           ),
           const SizedBox(height: 10),
@@ -180,7 +301,7 @@ class LoginForm extends StatelessWidget {
   Widget _buildMobileLoginButton() {
     return SecondaryButton(
       text: 'Login with Mobile Number',
-      onPressed: () {},
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => PhoneVerificationScreen(),)),
     );
   }
 }

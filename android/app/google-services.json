@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "63268418335",
+    "project_id": "trai-ui",
+    "storage_bucket": "trai-ui.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63268418335:android:2483a9a64a96501459b62a",
+        "android_client_info": {
+          "package_name": "com.example.trai_ui"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJtYz-8IHC7-UerPjJaUPiLykaCVOvdEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

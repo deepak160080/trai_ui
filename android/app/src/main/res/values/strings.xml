@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">trai_ui</string>
+    <string name="facebook_app_id">1079745726719924</string>
+    <string name="fb_login_protocol_scheme">fb1079745726719924</string>
+    <string name="facebook_client_token">3cf88a83689cfeaf71f3c27e36667206</string>
+</resources>
