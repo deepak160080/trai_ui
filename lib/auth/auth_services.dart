@@ -42,7 +42,10 @@ class AuthServices {
     }
   }
   // Sign in with Google
-  Future<UserCredential?> signInWithGoogle() async {
+
+
+// Fix the return type to match the possible null return
+Future<UserCredential?> signInWithGoogle() async {
     try {
       // Handle web platform differently
       if (kIsWeb) {
@@ -53,6 +56,7 @@ class AuthServices {
       // Trigger the authentication flow for mobile
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
+      // Early return if user cancels sign in
       if (googleUser == null) {
         return null;
       }
@@ -67,13 +71,14 @@ class AuthServices {
         idToken: googleAuth.idToken,
       );
 
-      // Sign in with Firebase
+      // Sign in with Firebase and return the result
       return await _auth.signInWithCredential(credential);
     } catch (e) {
       print('Error signing in with Google: $e');
       rethrow;
     }
-  }
+}
+
 
   // Sign out
   Future<void> signOut() async {

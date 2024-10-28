@@ -7,6 +7,7 @@ import 'package:trai_ui/auth/auth_services.dart';
 import 'package:trai_ui/auth/phone_authentication.dart';
 import 'package:trai_ui/auth/widgets/branded_logo.dart';
 import 'package:trai_ui/auth/widgets/buttons.dart';
+import 'package:trai_ui/home_page.dart';
 import 'package:trai_ui/responsive/ts.dart';
 import 'package:trai_ui/widget/textfield.dart';
 
@@ -224,31 +225,38 @@ class _LoginFormState extends State<LoginForm> {
             text: 'Log in with Google',
             icon: FontAwesomeIcons.google,
             color: Colors.red,
-            onPressed: () async {
-                  setState(() {
-                    _isSigningIn = true;
-                  });
-                  try {
-                    final userCredential = 
-                        await _authService.signInWithGoogle();
-                    if (userCredential != null && mounted) {
-                      // Navigate to home screen
-                      Navigator.pushReplacementNamed(context, '/home');
-                    }
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Error signing in: $e'),
-                      ),
-                    );
-                  } finally {
-                    if (mounted) {
-                      setState(() {
-                        _isSigningIn = false;
-                      });
-                    }
-                  }
-                },
+onPressed: () async {
+  setState(() {
+    _isSigningIn = true;
+  });
+  try {
+    final userCredential = await _authService.signInWithGoogle();
+    if (userCredential != null && mounted) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage(),));
+    } else if (mounted) {
+      // Handle the case where sign in was cancelled
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Sign in cancelled'),
+        ),
+      );
+    }
+  } catch (e) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error signing in: $e'),
+        ),
+      );
+    }
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isSigningIn = false;
+      });
+    }
+  }
+},
             width: double.infinity,
           ),
           const SizedBox(height: 10),
@@ -301,7 +309,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget _buildMobileLoginButton() {
     return SecondaryButton(
       text: 'Login with Mobile Number',
-      onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => PhoneVerificationScreen(),)),
+      onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) => const PhoneVerificationScreen(),)),
     );
   }
 }
