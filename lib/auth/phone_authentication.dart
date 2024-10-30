@@ -96,10 +96,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
           children: [
             const Text(
               'Enter your phone number',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+             
             ),
             const SizedBox(height: 20),
             Row(
@@ -130,11 +127,9 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                   child: TextField(
                     controller: _phoneController,
                     keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Phone Number',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+                     
                     ),
                   ),
                 ),
@@ -146,12 +141,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
               height: 50,
               child: ElevatedButton(
                 onPressed: _isLoading ? null : _sendOTP,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
                 child: _isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Send OTP', style: TextStyle(fontSize: 18)),

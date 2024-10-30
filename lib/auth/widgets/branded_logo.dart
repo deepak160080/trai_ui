@@ -6,6 +6,7 @@ class BrandLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final textTheme = Theme.of(context).textTheme;
     const double circleSize = 35;
     return SizedBox(
       width: circleSize * 2,
@@ -25,7 +26,7 @@ class BrandLogo extends StatelessWidget {
             left: circleSize * 0.25,
             child: Text(
               "Trai",
-              style: Ts.bold25(),
+              style: textTheme.headlineLarge,
             ),
           ),
         ],

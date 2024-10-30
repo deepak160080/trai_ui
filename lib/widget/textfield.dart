@@ -15,16 +15,14 @@ class Textfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final inputDecorationTheme = Theme.of(context).inputDecorationTheme;
+    final textheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
     Text(
         text,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
-          ),
+          style: textheme.bodyLarge
         ),
         const SizedBox(height: 4),
         TextField(
@@ -32,38 +30,15 @@ class Textfield extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             hintText: text,
-            hintStyle: Ts.medium12(),
+            hintStyle: inputDecorationTheme.hintStyle,
             filled: true,
-            fillColor: Colors.white,
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 16,
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(
-                color: Colors.black12,
-                width: 1,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-              borderSide: BorderSide(
-                color: Colors.blue.shade400,
-                width: 2,
-              ),
-            ),
-          ),
-          keyboardType: TextInputType.emailAddress,
-          style: Ts.medium12()
-        ),
+            fillColor: inputDecorationTheme.fillColor,
+            contentPadding: inputDecorationTheme.contentPadding,
+            border: inputDecorationTheme.border,
+            enabledBorder: inputDecorationTheme.enabledBorder,
+            focusedBorder: inputDecorationTheme.focusedBorder,
+        
+          ))
       ],
     );
   }

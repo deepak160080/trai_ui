@@ -45,21 +45,12 @@ class SecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final textTheme = Theme.of(context).textTheme;
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.grey, width: 0.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          fixedSize: const Size.fromHeight(50),
-          elevation: 0,
-        ),
-        child: Text(text, style: Ts.bold16(color: Colors.black)),
+        child: Text(text, style: textTheme.labelMedium),
       ),
     );
   }

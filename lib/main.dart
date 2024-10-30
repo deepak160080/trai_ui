@@ -1,12 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trai_ui/auth/login_screen.dart';
 import 'package:trai_ui/firebase_options.dart';
+import 'package:trai_ui/provider/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => ThemeProvider(),
+    child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,10 +19,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Trai App',
-      home: LoginScreen(),
+    return  Consumer<ThemeProvider>(
+       builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Trai App',
+          theme: themeProvider.getTheme(context),
+          home: const LoginScreen(),
+        );
+      }
     );
   }
 }

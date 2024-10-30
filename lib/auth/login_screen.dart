@@ -37,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
           flex: 2,
           child: SingleChildScrollView(
             child: Container(
-              color: Colors.white,
               child: const LoginForm(
                 socialButtonsLayout: SocialButtonsLayout.grid,
                 padding: EdgeInsets.all(20),

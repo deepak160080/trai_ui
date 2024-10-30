@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trai_ui/auth/auth_services.dart';
 import 'package:trai_ui/auth/login_screen.dart';
+import 'package:trai_ui/provider/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -35,7 +37,18 @@ class _HomePageState extends State<HomePage> {
         }
       }, 
       child: const Text("Logout")
-    )
+    ),
+    IconButton(
+            icon: Icon(
+              Provider.of<ThemeProvider>(context).isDarkMode 
+                ? Icons.light_mode 
+                : Icons.dark_mode,
+            ),
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            },
+          ),
+     
   ],
 ),
       body: const Center(
